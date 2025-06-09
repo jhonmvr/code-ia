@@ -1,9 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
+import { Route as RootRoute } from './root'
 
-export const Route = createLazyFileRoute('/about')({
-  component: About,
+export const Route = createRoute({
+  getParentRoute: () => RootRoute,
+  path: '/about',
+  component: () => <div>About</div>,
 })
-
-function About() {
-  return <div className="p-2">Hello from About!</div>
-}

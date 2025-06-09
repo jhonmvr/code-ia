@@ -1,13 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router'
+import { createRoute } from '@tanstack/react-router'
+import { Route as RootRoute } from './root'
 
-export const Route = createLazyFileRoute('/')({
-  component: Index,
+export const Route = createRoute({
+  getParentRoute: () => RootRoute,
+  path: '/',
+  component: () => <div>Home XDD</div>,
 })
-
-function Index() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
-  )
-}
