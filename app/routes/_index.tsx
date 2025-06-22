@@ -1,6 +1,6 @@
 import { json, type MetaFunction } from '@remix-run/cloudflare';
 import { ClientOnly } from 'remix-utils/client-only';
-import {Chat} from '~/components/chat/Chat';
+import {Chat} from '~/components/chat/Chat.client';
 import BackgroundRays from '~/components/ui/BackgroundRays';
 
 export const meta: MetaFunction = () => {

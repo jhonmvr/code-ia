@@ -1,7 +1,7 @@
 export type DebugLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error';
-import Chalk from 'chalk';
+import { Chalk } from 'chalk';
 
-const chalk =  Chalk({ level: 3 });
+const chalk = new Chalk({ level: 3 });
 
 type LoggerFunction = (...messages: any[]) => void;
 

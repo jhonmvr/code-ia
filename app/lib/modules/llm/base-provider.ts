@@ -3,6 +3,7 @@ import type { ProviderInfo, ProviderConfig, ModelInfo } from './types';
 import type { IProviderSetting } from '../../../types/model';
 import { createOpenAI } from '@ai-sdk/openai';
 import { LLMManager } from './manager';
+import type { Env } from 'electron';
 
 export abstract class BaseProvider implements ProviderInfo {
   abstract name: string;
