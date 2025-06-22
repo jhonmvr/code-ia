@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
+    "module": "esnext",           // ✅ o "es2020", "nodenext", etc.
+    "target": "esnext",           // ✅ también importante para compatibilidad
+    "moduleResolution": "bundler", // ✅ ideal para Vite 5
+    "types": ["vite/client"],      // ✅ para tipado de import.meta.env
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "jsx": "react-jsx",
-    "target": "ESNext",
-    "module": "commonjs",
     "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "strictNullChecks": true
   },
   //"include": ["src", "src/types"]
