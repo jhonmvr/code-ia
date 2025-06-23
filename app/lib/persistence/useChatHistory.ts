@@ -3,9 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { atom } from 'nanostores';
 import { generateId, type JSONValue, type Message } from 'ai';
 import { toast } from 'react-toastify';
-// TODO: Update the import path below if the location is different, or create the file if missing.
-import { workbenchStore } from '../../lib/store/workbench'; // Import workbenchStore
-import { logStore } from '../store/logs'; // Import logStore
+import { workbenchStore } from '~/lib/store/workbench';
+import { logStore } from '~/lib/store/logs'; // Import logStore
 import {
   getMessages,
   getNextId,
@@ -13,20 +12,16 @@ import {
   openDatabase,
   setMessages,
   duplicateChat,
-
-
-
-
   createChatFromMessages,
   getSnapshot,
   setSnapshot,
   type IChatMetadata,
 } from './db';
-import type { FileMap } from '../store/files';
+import type { FileMap } from '~/lib/store/files';
 import type { Snapshot } from './types';
-import { webcontainer } from '../../lib/webcontainer';
-import { detectProjectCommands, createCommandActionsString } from '../../utils/projectCommands';
-import type { ContextAnnotation } from '../../types/context';
+import { webcontainer } from '~/lib/webcontainer';
+import { detectProjectCommands, createCommandActionsString } from '~/utils/projectCommands';
+import type { ContextAnnotation } from '~/types/context';
 
 export interface ChatHistoryItem {
   id: string;
