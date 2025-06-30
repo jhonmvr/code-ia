@@ -1,6 +1,6 @@
-import { BaseProvider } from '../base-provider';
-import type { ModelInfo } from '../types';
-import type { IProviderSetting } from '../../../../types/model';
+import { BaseProvider } from '~/lib/modules/llm/base-provider';
+import type { ModelInfo } from '~/lib/modules/llm/types';
+import type { IProviderSetting } from '~/types/model';
 import type { LanguageModelV1 } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 

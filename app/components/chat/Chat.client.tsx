@@ -8,7 +8,7 @@ import { useChat } from 'ai/react';
 import { useAnimate } from 'framer-motion';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { cssTransition, toast, ToastContainer } from 'react-toastify';
-import { useMessageParser, usePromptEnhancer } from '~/lib/hook';
+import { useMessageParser, usePromptEnhancer } from '~/lib/hooks';
 import { description, useChatHistory } from '~/lib/persistence';
 import { chatStore } from '~/lib/stores/chat';
 import { workbenchStore } from '~/lib/stores/workbench';
@@ -23,7 +23,8 @@ import { createSampler } from '~/utils/sampler';
 import { logStore } from '~/lib/stores/logs';
 import { filesToArtifacts } from '~/utils/fileUtils';
 
-import { useSettings } from '~/lib/hook/useSettings';
+import { useSettings } from '~/lib/hooks/useSettings';
+import { BaseChat } from './BaseChat';
 
 const toastAnimation = cssTransition({
   enter: 'animated fadeInRight',
@@ -447,9 +448,6 @@ export const ChatImpl = memo(
         showChat={showChat}
         chatStarted={chatStarted}
         isStreaming={isLoading || fakeLoading}
-        onStreamingChange={(streaming) => {
-          streamingState.set(streaming);
-        }}
         enhancingPrompt={enhancingPrompt}
         promptEnhanced={promptEnhanced}
         sendMessage={sendMessage}

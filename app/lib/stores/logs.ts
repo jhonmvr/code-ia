@@ -1,6 +1,6 @@
 import { atom, map } from 'nanostores';
 import Cookies from 'js-cookie';
-import { createScopedLogger } from '../../utils/logger';
+import { createScopedLogger } from '~/utils/logger';
 
 const logger = createScopedLogger('LogStore');
 

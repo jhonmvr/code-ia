@@ -360,7 +360,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     return chatStarted ? (
                       <Messages
                         className="flex flex-col w-full flex-1 max-w-chat pb-6 mx-auto z-1"
-                        messages={messages}
+                        messages={messages || []}
                         isStreaming={isStreaming}
                       />
                     ) : null;
@@ -377,7 +377,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     <DeployChatAlert
                       alert={deployAlert}
                       clearAlert={() => clearDeployAlert?.()}
-                      postMessage={(message: string | undefined) => {
+                      postMessage={(message: string) => {
                         sendMessage?.({} as any, message);
                         clearSupabaseAlert?.();
                       }}
@@ -387,7 +387,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     <SupabaseChatAlert
                       alert={supabaseAlert}
                       clearAlert={() => clearSupabaseAlert?.()}
-                      postMessage={(message) => {
+                      postMessage={(message: string) => {
                         sendMessage?.({} as any, message);
                         clearSupabaseAlert?.();
                       }}
@@ -397,7 +397,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     <ChatAlert
                       alert={actionAlert}
                       clearAlert={() => clearAlert?.()}
-                      postMessage={(message) => {
+                      postMessage={(message: string) => {
                         sendMessage?.({} as any, message);
                         clearAlert?.();
                       }}
@@ -484,8 +484,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   <ClientOnly>
                     {() => (
                       <ScreenshotStateManager
-                        setUploadedFiles={setUploadedFiles}
-                        setImageDataList={setImageDataList}
+                        setUploadedFiles={setUploadedFiles || (() => {})}
+                        setImageDataList={setImageDataList || (() => {})}
                         uploadedFiles={uploadedFiles}
                         imageDataList={imageDataList}
                       />
@@ -612,7 +612,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           onStop={stopListening}
                           disabled={isStreaming}
                         />
-                        {chatStarted && <ClientOnly>{() => <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
+                        {chatStarted && <ClientOnly>{() => exportChat && <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
                         <IconButton
                           title="Model Settings"
                           className={classNames('transition-all flex items-center gap-1', {
@@ -645,13 +645,13 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
             <div className="flex flex-col justify-center">
               {!chatStarted && (
                 <div className="flex justify-center gap-2">
-                  {ImportButtons(importChat)}
-                  <GitCloneButton importChat={importChat} />
+                  {importChat && ImportButtons({ importChat })}
+                  {importChat && <GitCloneButton importChat={importChat} />}
                 </div>
               )}
               <div className="flex flex-col gap-5">
                 {!chatStarted &&
-                  ExamplePrompts((event, messageInput) => {
+                  ExamplePrompts((event: React.MouseEvent, messageInput?: string) => {
                     if (isStreaming) {
                       handleStop?.();
                       return;
