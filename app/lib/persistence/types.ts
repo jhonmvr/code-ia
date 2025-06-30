@@ -1,4 +1,4 @@
-import type { FileMap } from '../store/files';
+import type { FileMap } from '../stores/files';
 
 export interface Snapshot {
   chatIndex: string;

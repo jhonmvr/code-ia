@@ -1,10 +1,10 @@
 import { useStore } from '@nanostores/react';
-import { themeStore } from './lib/store/theme';
+import { themeStore } from './lib/stores/theme';
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react';
 import { createHead } from 'remix-island';
 import { useEffect } from 'react';
 import { stripIndents } from './utils/stripIndent';
-import { logStore } from './lib/store/logs';
+import { logStore } from './lib/stores/logs';
 import { ClientOnly } from 'remix-utils/client-only';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';

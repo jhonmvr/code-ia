@@ -378,6 +378,9 @@ importers:
       '@types/file-saver':
         specifier: ^2.0.7
         version: 2.0.7
+      '@types/istextorbinary':
+        specifier: ^5.0.0
+        version: 5.0.0
       '@types/js-cookie':
         specifier: ^3.0.6
         version: 3.0.6
@@ -3244,6 +3247,10 @@ packages:
 
   '@types/http-cache-semantics@4.0.4':
     resolution: {integrity: sha512-1m0bIFVc7eJWyve9S0RnuRgcQqF/Xd5QsUZAZeQFr1Q3/p9JWoQQEqmVy+DPTNpGXwhgIetAoYF8JSc33q29QA==}
+
+  '@types/istextorbinary@5.0.0':
+    resolution: {integrity: sha512-KZ79Sp9as8I60R3MG9HotIaJESwWJQkO1PQ5v/f7RHwdHpX/MtvvUVDR0Yy2z7VK2EK7y3YCY8h36xzhYALIwg==}
+    deprecated: This is a stub types definition. istextorbinary provides its own type definitions, so you do not need this installed.
 
   '@types/js-cookie@3.0.6':
     resolution: {integrity: sha512-wkw9yd1kEXOPnvEeEV1Go1MmxtBJL0RR79aOTAApecWFVu7w0NNXNqhcWgvw2YgZDYadliXkl14pa3WXw5jlCQ==}
@@ -11216,6 +11223,10 @@ snapshots:
       hoist-non-react-statics: 3.3.2
 
   '@types/http-cache-semantics@4.0.4': {}
+
+  '@types/istextorbinary@5.0.0':
+    dependencies:
+      istextorbinary: 9.5.0
 
   '@types/js-cookie@3.0.6': {}
 

@@ -3,8 +3,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { atom } from 'nanostores';
 import { generateId, type JSONValue, type Message } from 'ai';
 import { toast } from 'react-toastify';
-import { workbenchStore } from '~/lib/store/workbench';
-import { logStore } from '~/lib/store/logs'; // Import logStore
+import { workbenchStore } from '~/lib/stores/workbench';
+import { logStore } from '~/lib/stores/logs'; // Import logStore
 import {
   getMessages,
   getNextId,
@@ -17,7 +17,7 @@ import {
   setSnapshot,
   type IChatMetadata,
 } from './db';
-import type { FileMap } from '~/lib/store/files';
+import type { FileMap } from '~/lib/stores/files';
 import type { Snapshot } from './types';
 import { webcontainer } from '~/lib/webcontainer';
 import { detectProjectCommands, createCommandActionsString } from '~/utils/projectCommands';

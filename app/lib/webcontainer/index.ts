@@ -32,7 +32,7 @@ if (!import.meta.env.SSR) {
       .then(async (webcontainer) => {
         webcontainerContext.loaded = true;
 
-        const { workbenchStore } = await import('../store/workbench');
+        const { workbenchStore } = await import('../stores/workbench');
 
         // Listen for preview errors
         webcontainer.on('preview-message', (message) => {
