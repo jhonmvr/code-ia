@@ -11,7 +11,7 @@ import { db, deleteById, getAll, chatId, type ChatHistoryItem, useChatHistory } 
 import { cubicEasingFn } from '../../utils/easings';
 import { HistoryItem } from './HistoryItem';
 import { binDates } from './date-binning';
-import { useSearchFilter } from '../../lib/hook/useSearchFilter';
+import { useSearchFilter } from '../../lib/hooks/useSearchFilter';
 import { classNames } from '../../utils/classNames';
 import { useStore } from '@nanostores/react';
 import { profileStore } from '../../lib/stores/profile';

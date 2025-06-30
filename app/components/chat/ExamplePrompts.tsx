@@ -1,56 +1,37 @@
-import { memo } from 'react';
-import { classNames } from '~/utils/classNames';
+import React from 'react';
 
-interface ExamplePromptsProps {
-  onPromptClick: (event: React.MouseEvent, messageInput?: string) => void;
-}
+const EXAMPLE_PROMPTS = [
+  { text: 'Create a mobile app about bolt.diy' },
+  { text: 'Build a todo app in React using Tailwind' },
+  { text: 'Build a simple blog using Astro' },
+  { text: 'Create a cookie consent form using Material UI' },
+  { text: 'Make a space invaders game' },
+  { text: 'Make a Tic Tac Toe game in html, css and js only' },
+];
 
-export const ExamplePrompts = memo<ExamplePromptsProps>(({ onPromptClick }) => {
-  const examples = [
-    {
-      title: 'Create a React app',
-      description: 'Build a modern React application',
-      prompt: 'Create a React app with TypeScript and Tailwind CSS'
-    },
-    {
-      title: 'Build a landing page',
-      description: 'Design a beautiful landing page',
-      prompt: 'Create a modern landing page for a SaaS product'
-    },
-    {
-      title: 'Add authentication',
-      description: 'Implement user authentication',
-      prompt: 'Add authentication to my Next.js app using NextAuth'
-    }
-  ];
-
+export function ExamplePrompts(sendMessage?: { (event: React.UIEvent, messageInput?: string): void | undefined }) {
   return (
-    <div className="max-w-chat mx-auto px-4 lg:px-0">
-      <h3 className="text-lg font-semibold text-bolt-elements-textPrimary mb-4">
-        Try these examples
-      </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {examples.map((example, index) => (
-          <button
-            key={index}
-            onClick={(e) => onPromptClick(e, example.prompt)}
-            className={classNames(
-              'p-4 text-left bg-bolt-elements-background-depth-1',
-              'border border-bolt-elements-borderColor rounded-lg',
-              'hover:bg-bolt-elements-background-depth-2 transition-colors'
-            )}
-          >
-            <h4 className="font-medium text-bolt-elements-textPrimary mb-1">
-              {example.title}
-            </h4>
-            <p className="text-sm text-bolt-elements-textSecondary">
-              {example.description}
-            </p>
-          </button>
-        ))}
+    <div id="examples" className="relative flex flex-col gap-9 w-full max-w-3xl mx-auto flex justify-center mt-6">
+      <div
+        className="flex flex-wrap justify-center gap-2"
+        style={{
+          animation: '.25s ease-out 0s 1 _fade-and-move-in_g2ptj_1 forwards',
+        }}
+      >
+        {EXAMPLE_PROMPTS.map((examplePrompt, index: number) => {
+          return (
+            <button
+              key={index}
+              onClick={(event) => {
+                sendMessage?.(event, examplePrompt.text);
+              }}
+              className="border border-bolt-elements-borderColor rounded-full bg-gray-50 hover:bg-gray-100 dark:bg-gray-950 dark:hover:bg-gray-900 text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary px-3 py-1 text-xs transition-theme"
+            >
+              {examplePrompt.text}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
-});
-
-ExamplePrompts.displayName = 'ExamplePrompts'; 
+}
