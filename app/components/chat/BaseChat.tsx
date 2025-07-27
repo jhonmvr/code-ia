@@ -20,7 +20,6 @@ import styles from './BaseChat.module.scss';
 import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
 import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
 import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
-import GitCloneButton from './GitCloneButton';
 
 import FilePreview from './FilePreview';
 import { ModelSelector } from '~/components/chat/ModelSelector';
@@ -355,17 +354,18 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               initial="smooth"
             >
               <StickToBottom.Content className="flex flex-col gap-4">
-                <ClientOnly>
-                  {() => {
-                    return chatStarted ? (
+                {chatStarted && (
+                  <ClientOnly>
+                    {() => (
                       <Messages
                         className="flex flex-col w-full flex-1 max-w-chat pb-6 mx-auto z-1"
                         messages={messages || []}
                         isStreaming={isStreaming}
                       />
-                    ) : null;
-                  }}
-                </ClientOnly>
+                    )}
+                  </ClientOnly>
+                )}
+
               </StickToBottom.Content>
               <div
                 className={classNames('my-auto flex flex-col gap-2 w-full max-w-chat mx-auto z-prompt mb-6', {
@@ -444,34 +444,36 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     <rect className={classNames(styles.PromptShine)} x="48" y="24" width="70" height="1"></rect>
                   </svg>
                   <div>
-                    <ClientOnly>
-                      {() => (
-                        <div className={isModelSettingsCollapsed ? 'hidden' : ''}>
-                          <ModelSelector
-                            key={provider?.name + ':' + modelList.length}
-                            model={model}
-                            setModel={setModel}
-                            modelList={modelList}
-                            provider={provider}
-                            setProvider={setProvider}
-                            providerList={providerList || (PROVIDER_LIST as ProviderInfo[])}
-                            apiKeys={apiKeys}
-                            modelLoading={isModelLoading}
-                          />
-                          {(providerList || []).length > 0 &&
-                            provider &&
-                            (!LOCAL_PROVIDERS.includes(provider.name) || 'OpenAILike') && (
-                              <APIKeyManager
-                                provider={provider}
-                                apiKey={apiKeys[provider.name] || ''}
-                                setApiKey={(key) => {
-                                  onApiKeysChange(provider.name, key);
-                                }}
-                              />
-                            )}
-                        </div>
-                      )}
-                    </ClientOnly>
+                    {!isModelSettingsCollapsed && (
+                      <ClientOnly>
+                        {() => (
+                          <>
+                            <ModelSelector
+                              key={provider?.name + ':' + modelList.length}
+                              model={model}
+                              setModel={setModel}
+                              modelList={modelList}
+                              provider={provider}
+                              setProvider={setProvider}
+                              providerList={providerList || (PROVIDER_LIST as ProviderInfo[])}
+                              apiKeys={apiKeys}
+                              modelLoading={isModelLoading}
+                            />
+                            {(providerList || []).length > 0 &&
+                              provider &&
+                              (!LOCAL_PROVIDERS.includes(provider.name) || provider.name === 'OpenAILike') && (
+                                <APIKeyManager
+                                  provider={provider}
+                                  apiKey={apiKeys[provider.name] || ''}
+                                  setApiKey={(key) => {
+                                    onApiKeysChange(provider.name, key);
+                                  }}
+                                />
+                              )}
+                          </>
+                        )}
+                      </ClientOnly>
+                    )}
                   </div>
                   <FilePreview
                     files={uploadedFiles}
@@ -484,8 +486,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   <ClientOnly>
                     {() => (
                       <ScreenshotStateManager
-                        setUploadedFiles={setUploadedFiles || (() => {})}
-                        setImageDataList={setImageDataList || (() => {})}
+                        setUploadedFiles={setUploadedFiles || (() => { })}
+                        setImageDataList={setImageDataList || (() => { })}
                         uploadedFiles={uploadedFiles}
                         imageDataList={imageDataList}
                       />
@@ -602,7 +604,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           {enhancingPrompt ? (
                             <div className="i-svg-spinners:90-ring-with-bg text-bolt-elements-loader-progress text-xl animate-spin"></div>
                           ) : (
-                            <div className="i-bolt:stars text-xl"></div>
+                            <div className="text-xl"></div>
                           )}
                         </IconButton>
 
@@ -612,7 +614,11 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                           onStop={stopListening}
                           disabled={isStreaming}
                         />
-                        {chatStarted && <ClientOnly>{() => exportChat && <ExportChatButton exportChat={exportChat} />}</ClientOnly>}
+                        {chatStarted && exportChat && (
+                          <ClientOnly>
+                            {() => <ExportChatButton exportChat={exportChat} />}
+                          </ClientOnly>
+                        )}
                         <IconButton
                           title="Model Settings"
                           className={classNames('transition-all flex items-center gap-1', {
@@ -643,12 +649,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             </StickToBottom>
             <div className="flex flex-col justify-center">
-              {!chatStarted && (
-                <div className="flex justify-center gap-2">
-                  {importChat && ImportButtons({ importChat })}
-                  {importChat && <GitCloneButton importChat={importChat} />}
-                </div>
-              )}
+              
               <div className="flex flex-col gap-5">
                 {!chatStarted &&
                   ExamplePrompts((event: React.MouseEvent, messageInput?: string) => {
@@ -659,7 +660,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
 
                     handleSendMessage?.(event, messageInput);
                   })}
-                {!chatStarted && <StarterTemplates />}
               </div>
             </div>
           </div>

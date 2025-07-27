@@ -6,17 +6,17 @@ const StarterTemplates = memo(() => {
     {
       title: 'React App',
       description: 'Create a new React application',
-      icon: 'i-logos:react'
+      icon: ''
     },
     {
       title: 'Next.js App',
       description: 'Build a Next.js application',
-      icon: 'i-logos:nextjs-icon'
+      icon: ''
     },
     {
       title: 'Vue App',
       description: 'Create a Vue.js application',
-      icon: 'i-logos:vue'
+      icon: ''
     }
   ];
 
