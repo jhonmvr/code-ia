@@ -2,7 +2,6 @@ import type { WebContainer, WebContainerProcess } from '@webcontainer/api';
 import type { ITerminal } from '~/types/terminal';
 import { withResolvers } from './promises';
 import { atom } from 'nanostores';
-import { expoUrlAtom } from '~/lib/stores/qrCodeStore';
 
 export async function newShellProcess(webcontainer: WebContainer, terminal: ITerminal) {
   const args: string[] = [];
@@ -155,15 +154,7 @@ export class CodeiaShell {
 
       buffer += value || '';
 
-      const expoUrlMatch = buffer.match(expoUrlRegex);
-
-      if (expoUrlMatch) {
-        const cleanUrl = expoUrlMatch[1]
-          .replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')
-          .replace(/[^\x20-\x7E]+$/g, '');
-        expoUrlAtom.set(cleanUrl);
-        buffer = buffer.slice(buffer.indexOf(expoUrlMatch[1]) + expoUrlMatch[1].length);
-      }
+      
 
       if (buffer.length > 2048) {
         buffer = buffer.slice(-2048);
@@ -240,8 +231,7 @@ export class CodeiaShell {
 
     const tappedStream = this.#outputStream;
 
-    // Regex for Expo URL
-    const expoUrlRegex = /(exp:\/\/[^\s]+)/;
+
 
     while (true) {
       const { value, done } = await tappedStream.read();
@@ -254,19 +244,9 @@ export class CodeiaShell {
       fullOutput += text;
       buffer += text; // <-- Accumulate in buffer
 
-      // Extract Expo URL from buffer and set store
-      const expoUrlMatch = buffer.match(expoUrlRegex);
 
-      if (expoUrlMatch) {
-        // Remove any trailing ANSI escape codes or non-printable characters
-        const cleanUrl = expoUrlMatch[1]
-          .replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '')
-          .replace(/[^\x20-\x7E]+$/g, '');
-        expoUrlAtom.set(cleanUrl);
 
-        // Remove everything up to and including the URL from the buffer to avoid duplicate matches
-        buffer = buffer.slice(buffer.indexOf(expoUrlMatch[1]) + expoUrlMatch[1].length);
-      }
+   
 
       // Check if command completion signal with exit code
       const [, osc, , , code] = text.match(/\x1b\]654;([^\x07=]+)=?((-?\d+):(\d+))?\x07/) || [];

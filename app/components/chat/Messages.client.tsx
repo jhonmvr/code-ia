@@ -1,68 +1,110 @@
 import type { Message } from 'ai';
-import { memo } from 'react';
+import { Fragment } from 'react';
 import { classNames } from '~/utils/classNames';
+import { AssistantMessage } from './AssistantMessage';
+import { UserMessage } from './UserMessage';
+import { useLocation } from '@remix-run/react';
+import { db, chatId } from '~/lib/persistence/useChatHistory';
+import { forkChat } from '~/lib/persistence/db';
+import { toast } from 'react-toastify';
+import { useStore } from '@nanostores/react';
+import { profileStore } from '~/lib/stores/profile';
+import { forwardRef } from 'react';
+import type { ForwardedRef } from 'react';
 
 interface MessagesProps {
+  id?: string;
   className?: string;
-  messages: Message[];
   isStreaming?: boolean;
+  messages?: Message[];
 }
 
-export const Messages = memo<MessagesProps>(({ className, messages, isStreaming }) => {
-  return (
-    <div className={classNames('flex flex-col gap-4', className)}>
-      {messages.map((message, index) => (
-        <div
-          key={message.id || index}
-          className={classNames(
-            'flex gap-3 p-4 rounded-lg',
-            message.role === 'user'
-              ? 'bg-codeia-elements-bg-depth-2 ml-auto max-w-[80%]'
-              : 'bg-codeia-elements-bg-depth-1 mr-auto max-w-[80%]'
-          )}
-        >
-          <div className="flex-shrink-0 w-8 h-8 rounded-full bg-codeia-elements-bg-depth-3 flex items-center justify-center">
-            {message.role === 'user' ? (
-              <div className="i-ph:user text-codeia-elements-textSecondary" />
-            ) : (
-              <div className="i-ph:robot text-codeia-elements-textSecondary" />
-            )}
-          </div>
+export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
+  (props: MessagesProps, ref: ForwardedRef<HTMLDivElement> | undefined) => {
+    const { id, isStreaming = false, messages = [] } = props;
+    const location = useLocation();
+    const profile = useStore(profileStore);
 
-          <div className="flex-1 min-w-0">
-            <div className="text-sm text-codeia-elements-textPrimary whitespace-pre-wrap">
-              {renderContent(message.content)}
-            </div>
-            {isStreaming && index === messages.length - 1 && message.role === 'assistant' && (
-              <div className="mt-2">
-                <div className="inline-block w-2 h-4 bg-codeia-elements-textSecondary animate-pulse" />
-              </div>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-});
+    const handleRewind = (messageId: string) => {
+      const searchParams = new URLSearchParams(location.search);
+      searchParams.set('rewindTo', messageId);
+      window.location.search = searchParams.toString();
+    };
 
-Messages.displayName = 'Messages';
+    const handleFork = async (messageId: string) => {
+      try {
+        if (!db || !chatId.get()) {
+          toast.error('Chat persistence is not available');
+          return;
+        }
 
-function renderContent(content: string | { type: string; text: string }[]) {
-  if (typeof content === 'string') return content;
+        const urlId = await forkChat(db, chatId.get()!, messageId);
+        window.location.href = `/chat/${urlId}`;
+      } catch (error) {
+        toast.error('Failed to fork chat: ' + (error as Error).message);
+      }
+    };
 
-  if (Array.isArray(content)) {
-    // Solo mostrar el texto limpio, sin metadatos
-    const allText = content.map((block) => block.text).join('\n');
-    // Opcional: si quieres eliminar líneas que empiecen con `[Model:` o `[Provider:`
-    const filtered = allText
-      .split('\n')
-      .filter((line) => !line.startsWith('['))
-      .join('\n')
-      .trim();
+    return (
+      <div id={id} className={props.className} ref={ref}>
+        {messages.length > 0
+          ? messages.map((message, index) => {
+              const { role, content, id: messageId, annotations } = message;
+              const isUserMessage = role === 'user';
+              const isFirst = index === 0;
+              const isLast = index === messages.length - 1;
+              const isHidden = annotations?.includes('hidden');
 
-    return filtered || '[Sin mensaje]';
-  }
+              if (isHidden) {
+                return <Fragment key={index} />;
+              }
 
-  return '[Contenido no soportado]';
-}
-
+              return (
+                <div
+                  key={index}
+                  className={classNames('flex gap-4 p-6 py-5 w-full rounded-[calc(0.75rem-1px)]', {
+                    'bg-bolt-elements-messages-background': isUserMessage || !isStreaming || (isStreaming && !isLast),
+                    'bg-gradient-to-b from-bolt-elements-messages-background from-30% to-transparent':
+                      isStreaming && isLast,
+                    'mt-4': !isFirst,
+                  })}
+                >
+                  {isUserMessage && (
+                    <div className="flex items-center justify-center w-[40px] h-[40px] overflow-hidden bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-500 rounded-full shrink-0 self-start">
+                      {profile?.avatar ? (
+                        <img
+                          src={profile.avatar}
+                          alt={profile?.username || 'User'}
+                          className="w-full h-full object-cover"
+                          loading="eager"
+                          decoding="sync"
+                        />
+                      ) : (
+                        <div className="i-ph:user-fill text-2xl" />
+                      )}
+                    </div>
+                  )}
+                  <div className="grid grid-col-1 w-full">
+                    {isUserMessage ? (
+                      <UserMessage content={content} />
+                    ) : (
+                      <AssistantMessage
+                        content={content}
+                        annotations={message.annotations}
+                        messageId={messageId}
+                        onRewind={handleRewind}
+                        onFork={handleFork}
+                      />
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          : null}
+        {isStreaming && (
+          <div className="text-center w-full  text-bolt-elements-item-contentAccent i-svg-spinners:3-dots-fade text-4xl mt-4"></div>
+        )}
+      </div>
+    );
+  },
+);

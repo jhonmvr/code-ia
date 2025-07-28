@@ -16,17 +16,12 @@ import Cookies from 'js-cookie';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { workbenchStore } from '~/lib/stores/workbench';
 import styles from './BaseChat.module.scss';
-import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
-import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
 import { ExamplePrompts } from '~/components/chat/ExamplePrompts';
 
 import FilePreview from './FilePreview';
 import { ModelSelector } from '~/components/chat/ModelSelector';
-import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
 import type { ProviderInfo } from '~/types/model';
-import { ScreenshotStateManager } from './ScreenshotStateManager';
 import { toast } from 'react-toastify';
-import StarterTemplates from './StarterTemplates';
 import type { ActionAlert, SupabaseAlert, DeployAlert } from '~/types/actions';
 import DeployChatAlert from '~/components/deploy/DeployAlert';
 import ChatAlert from './ChatAlert';
@@ -35,10 +30,6 @@ import ProgressCompilation from './ProgressCompilation';
 import type { ProgressAnnotation } from '~/types/context';
 import type { ActionRunner } from '~/lib/runtime/action-runner';
 import { LOCAL_PROVIDERS } from '~/lib/stores/settings';
-import { SupabaseChatAlert } from '~/components/chat/SupabaseAlert';
-import { SupabaseConnection } from './SupabaseConnection';
-import { ExpoQrModal } from '~/components/workbench/ExpoQrModal';
-import { expoUrlAtom } from '~/lib/stores/qrCodeStore';
 import { useStore } from '@nanostores/react';
 import { StickToBottom, useStickToBottomContext } from '~/lib/hooks';
 
@@ -130,14 +121,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const [transcript, setTranscript] = useState('');
     const [isModelLoading, setIsModelLoading] = useState<string | undefined>('all');
     const [progressAnnotations, setProgressAnnotations] = useState<ProgressAnnotation[]>([]);
-    const expoUrl = useStore(expoUrlAtom);
-    const [qrModalOpen, setQrModalOpen] = useState(false);
 
-    useEffect(() => {
-      if (expoUrl) {
-        setQrModalOpen(true);
-      }
-    }, [expoUrl]);
+
 
     useEffect(() => {
       if (data) {
@@ -384,16 +369,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       }}
                     />
                   )}
-                  {supabaseAlert && (
-                    <SupabaseChatAlert
-                      alert={supabaseAlert}
-                      clearAlert={() => clearSupabaseAlert?.()}
-                      postMessage={(message: string) => {
-                        sendMessage?.({} as any, message);
-                        clearSupabaseAlert?.();
-                      }}
-                    />
-                  )}
+                
                   {actionAlert && (
                     <ChatAlert
                       alert={actionAlert}
@@ -484,16 +460,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       setImageDataList?.(imageDataList.filter((_, i) => i !== index));
                     }}
                   />
-                  <ClientOnly>
-                    {() => (
-                      <ScreenshotStateManager
-                        setUploadedFiles={setUploadedFiles || (() => { })}
-                        setImageDataList={setImageDataList || (() => { })}
-                        uploadedFiles={uploadedFiles}
-                        imageDataList={imageDataList}
-                      />
-                    )}
-                  </ClientOnly>
+                
                   <div
                     className={classNames(
                       'relative shadow-xs border border-codeia-elements-borderColor backdrop-blur rounded-lg',

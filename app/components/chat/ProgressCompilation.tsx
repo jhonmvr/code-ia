@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { classNames } from '~/utils/classNames';
 import type { ProgressAnnotation } from '~/types/context';
 
 interface ProgressCompilationProps {

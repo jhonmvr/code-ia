@@ -23,7 +23,6 @@ import { createSampler } from '~/utils/sampler';
 import { logStore } from '~/lib/stores/logs';
 import { filesToArtifacts } from '~/utils/fileUtils';
 
-import { useSettings } from '~/lib/hooks/useSettings';
 import { BaseChat } from './BaseChat';
 
 const toastAnimation = cssTransition({
@@ -125,7 +124,6 @@ export const ChatImpl = memo(
     const actionAlert = useStore(workbenchStore.alert);
     const deployAlert = useStore(workbenchStore.deployAlert);
     const supabaseAlert = useStore(workbenchStore.supabaseAlert);
-    const { activeProviders, promptId, autoSelectTemplate, contextOptimizationEnabled } = useSettings();
 
     const [model, setModel] = useState(() => {
       const savedModel = Cookies.get('selectedModel');
@@ -160,8 +158,8 @@ export const ChatImpl = memo(
       body: {
         apiKeys,
         files,
-        promptId,
-        contextOptimization: contextOptimizationEnabled,
+        promptId: searchParams.get('promptId') || '',
+        contextOptimization: "",
         supabase: {
           isConnected: false,
           hasSelectedProject: false,
@@ -312,11 +310,7 @@ export const ChatImpl = memo(
       if (!chatStarted) {
         setFakeLoading(true);
 
-        if (autoSelectTemplate) {
-       
-
-          
-        }
+      
 
         // If autoSelectTemplate is disabled or template selection failed, proceed with normal message
         setMessages([
@@ -455,7 +449,6 @@ export const ChatImpl = memo(
         setModel={handleModelChange}
         provider={provider}
         setProvider={handleProviderChange}
-        providerList={activeProviders}
         handleInputChange={(e) => {
           onTextareaChange(e);
           debouncedCachePrompt(e);
