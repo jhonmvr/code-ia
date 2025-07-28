@@ -15,8 +15,8 @@ export const SendButton = memo<SendButtonProps>(({ show, isStreaming, disabled, 
     <button
       className={classNames(
         'absolute right-2 top-2 w-10 h-10 rounded-lg flex items-center justify-center transition-all',
-        'bg-bolt-elements-background-depth-3 hover:bg-bolt-elements-background-depth-4',
-        'text-bolt-elements-textPrimary hover:text-bolt-elements-textSecondary',
+        'bg-codeia-elements-background-depth-3 hover:bg-codeia-elements-background-depth-4',
+        'text-codeia-elements-textPrimary hover:text-codeia-elements-textSecondary',
         'disabled:opacity-50 disabled:cursor-not-allowed'
       )}
       onClick={onClick}

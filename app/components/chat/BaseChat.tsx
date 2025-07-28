@@ -5,7 +5,6 @@
 import type { JSONValue, Message } from 'ai';
 import React, { type RefCallback, useEffect, useState } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
-import { Menu } from '~/components/sidebar/Menu.client';
 import { IconButton } from '~/components/ui/IconButton';
 import { Workbench } from '~/components/workbench/Workbench.client';
 import { classNames } from '~/utils/classNames';
@@ -15,7 +14,7 @@ import { SendButton } from './SendButton.client';
 import { APIKeyManager, getApiKeysFromCookies } from './APIKeyManager';
 import Cookies from 'js-cookie';
 import * as Tooltip from '@radix-ui/react-tooltip';
-
+import { workbenchStore } from '~/lib/stores/workbench';
 import styles from './BaseChat.module.scss';
 import { ExportChatButton } from '~/components/chat/chatExportAndImport/ExportChatButton';
 import { ImportButtons } from '~/components/chat/chatExportAndImport/ImportButtons';
@@ -256,6 +255,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     };
 
     const handleSendMessage = (event: React.UIEvent, messageInput?: string) => {
+      console.log('Sending message:', messageInput || input);
+      console.log('messages:', messages);
       if (sendMessage) {
         sendMessage(event, messageInput);
 
@@ -333,19 +334,19 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden')}
         data-chat-visible={showChat}
       >
-        <ClientOnly>{() => <Menu />}</ClientOnly>
         <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
               <div id="intro" className="mt-[16vh] max-w-chat mx-auto text-center px-4 lg:px-0">
-                <h1 className="text-3xl lg:text-6xl font-bold text-bolt-elements-textPrimary mb-4 animate-fade-in">
-                  Where ideas begin
+                <h1 className="text-3xl lg:text-6xl font-bold text-codeia-elements-textPrimary mb-4 animate-fade-in">
+                  Crea código sin ser experto
                 </h1>
-                <p className="text-md lg:text-xl mb-8 text-bolt-elements-textSecondary animate-fade-in animation-delay-200">
-                  Bring ideas to life in seconds or get help on existing projects.
+                <p className="text-md lg:text-xl mb-8 text-codeia-elements-textSecondary animate-fade-in animation-delay-200">
+                  Solo explica lo que quieres hacer y deja que la inteligencia artificial te ayude a programar, paso a paso.
                 </p>
               </div>
             )}
+
             <StickToBottom
               className={classNames('pt-6 px-2 sm:px-6 relative', {
                 'h-full flex flex-col modern-scrollbar': chatStarted,
@@ -408,7 +409,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 {progressAnnotations && <ProgressCompilation data={progressAnnotations} />}
                 <div
                   className={classNames(
-                    'relative bg-bolt-elements-background-depth-2 p-3 rounded-lg border border-bolt-elements-borderColor relative w-full max-w-chat mx-auto z-prompt',
+                    'relative bg-codeia-elements-background-depth-2 p-3 rounded-lg border border-codeia-elements-borderColor relative w-full max-w-chat mx-auto z-prompt',
 
                     /*
                      * {
@@ -495,15 +496,15 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   </ClientOnly>
                   <div
                     className={classNames(
-                      'relative shadow-xs border border-bolt-elements-borderColor backdrop-blur rounded-lg',
+                      'relative shadow-xs border border-codeia-elements-borderColor backdrop-blur rounded-lg',
                     )}
                   >
                     <textarea
                       ref={textareaRef}
                       className={classNames(
-                        'w-full pl-4 pt-4 pr-16 outline-none resize-none text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary bg-transparent text-sm',
+                        'w-full pl-4 pt-4 pr-16 outline-none resize-none text-codeia-elements-textPrimary placeholder-codeia-elements-textTertiary bg-transparent text-sm',
                         'transition-all duration-200',
-                        'hover:border-bolt-elements-focus',
+                        'hover:border-codeia-elements-focus',
                       )}
                       onDragEnter={(e) => {
                         e.preventDefault();
@@ -515,11 +516,11 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                       }}
                       onDragLeave={(e) => {
                         e.preventDefault();
-                        e.currentTarget.style.border = '1px solid var(--bolt-elements-borderColor)';
+                        e.currentTarget.style.border = '1px solid var(--codeia-elements-borderColor)';
                       }}
                       onDrop={(e) => {
                         e.preventDefault();
-                        e.currentTarget.style.border = '1px solid var(--bolt-elements-borderColor)';
+                        e.currentTarget.style.border = '1px solid var(--codeia-elements-borderColor)';
 
                         const files = Array.from(e.dataTransfer.files);
                         files.forEach((file) => {
@@ -565,7 +566,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         minHeight: TEXTAREA_MIN_HEIGHT,
                         maxHeight: TEXTAREA_MAX_HEIGHT,
                       }}
-                      placeholder="How can Bolt help you today?"
+                      placeholder="How can CodeIA help you today?"
                       translate="no"
                     />
                     <ClientOnly>
@@ -587,69 +588,29 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                         />
                       )}
                     </ClientOnly>
-                    <div className="flex justify-between items-center text-sm p-4 pt-2">
-                      <div className="flex gap-1 items-center">
-                        <IconButton title="Upload file" className="transition-all" onClick={() => handleFileUpload()}>
-                          <div className="i-ph:paperclip text-xl"></div>
-                        </IconButton>
-                        <IconButton
-                          title="Enhance prompt"
-                          disabled={input.length === 0 || enhancingPrompt}
-                          className={classNames('transition-all', enhancingPrompt ? 'opacity-100' : '')}
-                          onClick={() => {
-                            enhancePrompt?.();
-                            toast.success('Prompt enhanced!');
-                          }}
-                        >
-                          {enhancingPrompt ? (
-                            <div className="i-svg-spinners:90-ring-with-bg text-bolt-elements-loader-progress text-xl animate-spin"></div>
-                          ) : (
-                            <div className="text-xl"></div>
-                          )}
-                        </IconButton>
+                    <div className="flex justify-between items-center mt-2">
+                      <IconButton
+                        icon="i-ph:gear"
+                        aria-label="Mostrar configuración del modelo"
+                        onClick={() => setIsModelSettingsCollapsed((prev) => !prev)}
+                        className="text-codeia-elements-textTertiary hover:text-codeia-elements-textPrimary"
+                      />
 
-                        <SpeechRecognitionButton
-                          isListening={isListening}
-                          onStart={startListening}
-                          onStop={stopListening}
-                          disabled={isStreaming}
-                        />
-                        {chatStarted && exportChat && (
-                          <ClientOnly>
-                            {() => <ExportChatButton exportChat={exportChat} />}
-                          </ClientOnly>
-                        )}
-                        <IconButton
-                          title="Model Settings"
-                          className={classNames('transition-all flex items-center gap-1', {
-                            'bg-bolt-elements-item-backgroundAccent text-bolt-elements-item-contentAccent':
-                              isModelSettingsCollapsed,
-                            'bg-bolt-elements-item-backgroundDefault text-bolt-elements-item-contentDefault':
-                              !isModelSettingsCollapsed,
-                          })}
-                          onClick={() => setIsModelSettingsCollapsed(!isModelSettingsCollapsed)}
-                          disabled={!providerList || providerList.length === 0}
-                        >
-                          <div className={`i-ph:caret-${isModelSettingsCollapsed ? 'right' : 'down'} text-lg`} />
-                          {isModelSettingsCollapsed ? <span className="text-xs">{model}</span> : <span />}
-                        </IconButton>
-                      </div>
-                      {input.length > 3 ? (
-                        <div className="text-xs text-bolt-elements-textTertiary">
-                          Use <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Shift</kbd>{' '}
-                          + <kbd className="kdb px-1.5 py-0.5 rounded bg-bolt-elements-background-depth-2">Return</kbd>{' '}
-                          a new line
-                        </div>
-                      ) : null}
-                      <SupabaseConnection />
-                      <ExpoQrModal open={qrModalOpen} onClose={() => setQrModalOpen(false)} />
+                      <IconButton
+                        icon="i-ph:sidebar"
+                        aria-label="Mostrar workbench"
+                        onClick={() => workbenchStore.showWorkbench.set(true)}
+                        className="text-codeia-elements-textTertiary hover:text-codeia-elements-textPrimary"
+
+                      />
                     </div>
+
                   </div>
                 </div>
               </div>
             </StickToBottom>
             <div className="flex flex-col justify-center">
-              
+
               <div className="flex flex-col gap-5">
                 {!chatStarted &&
                   ExamplePrompts((event: React.MouseEvent, messageInput?: string) => {
@@ -686,7 +647,7 @@ function ScrollToBottom() {
   return (
     !isAtBottom && (
       <button
-        className="absolute z-50 top-[0%] translate-y-[-100%] text-4xl rounded-lg left-[50%] translate-x-[-50%] px-1.5 py-0.5 flex items-center gap-2 bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor text-bolt-elements-textPrimary text-sm"
+        className="absolute z-50 top-[0%] translate-y-[-100%] text-4xl rounded-lg left-[50%] translate-x-[-50%] px-1.5 py-0.5 flex items-center gap-2 bg-codeia-elements-background-depth-3 border border-codeia-elements-borderColor text-codeia-elements-textPrimary text-sm"
         onClick={() => scrollToBottom()}
       >
         Go to last message

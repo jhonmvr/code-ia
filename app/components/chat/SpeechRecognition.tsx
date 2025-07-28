@@ -21,7 +21,7 @@ export const SpeechRecognitionButton = memo<SpeechRecognitionButtonProps>(({
       disabled={disabled}
       className={classNames(
         'transition-all',
-        isListening ? 'text-bolt-elements-icon-error' : 'text-bolt-elements-textSecondary'
+        isListening ? 'text-codeia-elements-icon-error' : 'text-codeia-elements-textSecondary'
       )}
       onClick={isListening ? onStop : onStart}
     >

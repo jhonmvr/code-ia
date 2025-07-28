@@ -1,0 +1,19 @@
+import{E as h,i as C,d as M,c as y,m as E,s as g,a as S,g as b,b as F,e as P,f as k,r as o,u as D,R as z,h as H,j as L,k as O,l as T,n as B}from"./components-Btvo8uln.js";/**
+ * @remix-run/react v2.16.3
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */function j(u){if(!u)return null;let m=Object.entries(u),s={};for(let[a,e]of m)if(e&&e.__type==="RouteErrorResponse")s[a]=new h(e.status,e.statusText,e.data,e.internal===!0);else if(e&&e.__type==="Error"){if(e.__subType){let i=window[e.__subType];if(typeof i=="function")try{let r=new i(e.message);r.stack=e.stack,s[a]=r}catch{}}if(s[a]==null){let i=new Error(e.message);i.stack=e.stack,s[a]=i}}else s[a]=e;return s}/**
+ * @remix-run/react v2.16.3
+ *
+ * Copyright (c) Remix Software Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE.md file in the root directory of this source tree.
+ *
+ * @license MIT
+ */let n,t,c=!1,f;new Promise(u=>{f=u}).catch(()=>{});function I(u){if(!t){if(window.__remixContext.future.v3_singleFetch){if(!n){let l=window.__remixContext.stream;C(l,"No stream found for single fetch decoding"),window.__remixContext.stream=void 0,n=M(l,window).then(d=>{window.__remixContext.state=d.value,n.value=!0}).catch(d=>{n.error=d})}if(n.error)throw n.error;if(!n.value)throw n}let i=y(window.__remixManifest.routes,window.__remixRouteModules,window.__remixContext.state,window.__remixContext.future,window.__remixContext.isSpaMode),r;if(!window.__remixContext.isSpaMode){r={...window.__remixContext.state,loaderData:{...window.__remixContext.state.loaderData}};let l=E(i,window.location,window.__remixContext.basename);if(l)for(let d of l){let _=d.route.id,x=window.__remixRouteModules[_],w=window.__remixManifest.routes[_];x&&g(w,x,window.__remixContext.isSpaMode)&&(x.HydrateFallback||!w.hasLoader)?r.loaderData[_]=void 0:w&&!w.hasLoader&&(r.loaderData[_]=null)}r&&r.errors&&(r.errors=j(r.errors))}t=S({routes:i,history:P(),basename:window.__remixContext.basename,future:{v7_normalizeFormMethod:!0,v7_fetcherPersist:window.__remixContext.future.v3_fetcherPersist,v7_partialHydration:!0,v7_prependBasename:!0,v7_relativeSplatPath:window.__remixContext.future.v3_relativeSplatPath,v7_skipActionErrorRevalidation:window.__remixContext.future.v3_singleFetch===!0},hydrationData:r,mapRouteProperties:O,dataStrategy:window.__remixContext.future.v3_singleFetch&&!window.__remixContext.isSpaMode?F(window.__remixManifest,window.__remixRouteModules,()=>t):void 0,patchRoutesOnNavigation:b(window.__remixManifest,window.__remixRouteModules,window.__remixContext.future,window.__remixContext.isSpaMode,window.__remixContext.basename)}),t.state.initialized&&(c=!0,t.initialize()),t.createRoutesForHMR=k,window.__remixRouter=t,f&&f(t)}let[m,s]=o.useState(void 0),[a,e]=o.useState(t.state.location);return o.useLayoutEffect(()=>{c||(c=!0,t.initialize())},[]),o.useLayoutEffect(()=>t.subscribe(i=>{i.location!==a&&e(i.location)}),[a]),D(t,window.__remixManifest,window.__remixRouteModules,window.__remixContext.future,window.__remixContext.isSpaMode),o.createElement(o.Fragment,null,o.createElement(z.Provider,{value:{manifest:window.__remixManifest,routeModules:window.__remixRouteModules,future:window.__remixContext.future,criticalCss:m,isSpaMode:window.__remixContext.isSpaMode}},o.createElement(H,{location:a},o.createElement(L,{router:t,fallbackElement:null,future:{v7_startTransition:!0}}))),window.__remixContext.future.v3_singleFetch?o.createElement(o.Fragment,null):null)}var R,p=T;p.createRoot,R=p.hydrateRoot;const v=document.getElementById("root");v?o.startTransition(()=>{R(v,B.jsx(I,{}))}):console.error("No se encontró el elemento #root para hidratar la app");

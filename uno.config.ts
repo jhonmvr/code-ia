@@ -5,7 +5,7 @@ import { defineConfig, presetIcons, presetUno, transformerDirectives } from 'uno
 
 const iconPaths = globSync('./icons/*.svg');
 
-const collectionName = 'bolt';
+const collectionName = 'codeia';
 
 const customIconCollection = iconPaths.reduce(
   (acc, iconPath) => {
@@ -98,11 +98,11 @@ const COLOR_PRIMITIVES = {
 };
 
 export default defineConfig({
-  safelist: [...Object.keys(customIconCollection[collectionName] || {}).map((x) => `i-bolt:${x}`)],
+  safelist: [...Object.keys(customIconCollection[collectionName] || {}).map((x) => `i-codeia:${x}`)],
   shortcuts: {
-    'bolt-ease-cubic-bezier': 'ease-[cubic-bezier(0.4,0,0.2,1)]',
-    'transition-theme': 'transition-[background-color,border-color,color] duration-150 bolt-ease-cubic-bezier',
-    kdb: 'bg-bolt-elements-code-background text-bolt-elements-code-text py-1 px-1.5 rounded-md',
+    'codeia-ease-cubic-bezier': 'ease-[cubic-bezier(0.4,0,0.2,1)]',
+    'transition-theme': 'transition-[background-color,border-color,color] duration-150 codeia-ease-cubic-bezier',
+    kdb: 'bg-codeia-elements-code-background text-codeia-elements-code-text py-1 px-1.5 rounded-md',
     'max-w-chat': 'max-w-[var(--chat-max-width)]',
   },
   rules: [
@@ -115,115 +115,115 @@ export default defineConfig({
   theme: {
     colors: {
       ...COLOR_PRIMITIVES,
-      bolt: {
+      codeia: {
         elements: {
-          borderColor: 'var(--bolt-elements-borderColor)',
-          borderColorActive: 'var(--bolt-elements-borderColorActive)',
+          borderColor: 'var(--codeia-elements-borderColor)',
+          borderColorActive: 'var(--codeia-elements-borderColorActive)',
           background: {
             depth: {
-              1: 'var(--bolt-elements-bg-depth-1)',
-              2: 'var(--bolt-elements-bg-depth-2)',
-              3: 'var(--bolt-elements-bg-depth-3)',
-              4: 'var(--bolt-elements-bg-depth-4)',
+              1: 'var(--codeia-elements-bg-depth-1)',
+              2: 'var(--codeia-elements-bg-depth-2)',
+              3: 'var(--codeia-elements-bg-depth-3)',
+              4: 'var(--codeia-elements-bg-depth-4)',
             },
           },
-          textPrimary: 'var(--bolt-elements-textPrimary)',
-          textSecondary: 'var(--bolt-elements-textSecondary)',
-          textTertiary: 'var(--bolt-elements-textTertiary)',
+          textPrimary: 'var(--codeia-elements-textPrimary)',
+          textSecondary: 'var(--codeia-elements-textSecondary)',
+          textTertiary: 'var(--codeia-elements-textTertiary)',
           code: {
-            background: 'var(--bolt-elements-code-background)',
-            text: 'var(--bolt-elements-code-text)',
+            background: 'var(--codeia-elements-code-background)',
+            text: 'var(--codeia-elements-code-text)',
           },
           button: {
             primary: {
-              background: 'var(--bolt-elements-button-primary-background)',
-              backgroundHover: 'var(--bolt-elements-button-primary-backgroundHover)',
-              text: 'var(--bolt-elements-button-primary-text)',
+              background: 'var(--codeia-elements-button-primary-background)',
+              backgroundHover: 'var(--codeia-elements-button-primary-backgroundHover)',
+              text: 'var(--codeia-elements-button-primary-text)',
             },
             secondary: {
-              background: 'var(--bolt-elements-button-secondary-background)',
-              backgroundHover: 'var(--bolt-elements-button-secondary-backgroundHover)',
-              text: 'var(--bolt-elements-button-secondary-text)',
+              background: 'var(--codeia-elements-button-secondary-background)',
+              backgroundHover: 'var(--codeia-elements-button-secondary-backgroundHover)',
+              text: 'var(--codeia-elements-button-secondary-text)',
             },
             danger: {
-              background: 'var(--bolt-elements-button-danger-background)',
-              backgroundHover: 'var(--bolt-elements-button-danger-backgroundHover)',
-              text: 'var(--bolt-elements-button-danger-text)',
+              background: 'var(--codeia-elements-button-danger-background)',
+              backgroundHover: 'var(--codeia-elements-button-danger-backgroundHover)',
+              text: 'var(--codeia-elements-button-danger-text)',
             },
           },
           item: {
-            contentDefault: 'var(--bolt-elements-item-contentDefault)',
-            contentActive: 'var(--bolt-elements-item-contentActive)',
-            contentAccent: 'var(--bolt-elements-item-contentAccent)',
-            contentDanger: 'var(--bolt-elements-item-contentDanger)',
-            backgroundDefault: 'var(--bolt-elements-item-backgroundDefault)',
-            backgroundActive: 'var(--bolt-elements-item-backgroundActive)',
-            backgroundAccent: 'var(--bolt-elements-item-backgroundAccent)',
-            backgroundDanger: 'var(--bolt-elements-item-backgroundDanger)',
+            contentDefault: 'var(--codeia-elements-item-contentDefault)',
+            contentActive: 'var(--codeia-elements-item-contentActive)',
+            contentAccent: 'var(--codeia-elements-item-contentAccent)',
+            contentDanger: 'var(--codeia-elements-item-contentDanger)',
+            backgroundDefault: 'var(--codeia-elements-item-backgroundDefault)',
+            backgroundActive: 'var(--codeia-elements-item-backgroundActive)',
+            backgroundAccent: 'var(--codeia-elements-item-backgroundAccent)',
+            backgroundDanger: 'var(--codeia-elements-item-backgroundDanger)',
           },
           actions: {
-            background: 'var(--bolt-elements-actions-background)',
+            background: 'var(--codeia-elements-actions-background)',
             code: {
-              background: 'var(--bolt-elements-actions-code-background)',
+              background: 'var(--codeia-elements-actions-code-background)',
             },
           },
           artifacts: {
-            background: 'var(--bolt-elements-artifacts-background)',
-            backgroundHover: 'var(--bolt-elements-artifacts-backgroundHover)',
-            borderColor: 'var(--bolt-elements-artifacts-borderColor)',
+            background: 'var(--codeia-elements-artifacts-background)',
+            backgroundHover: 'var(--codeia-elements-artifacts-backgroundHover)',
+            borderColor: 'var(--codeia-elements-artifacts-borderColor)',
             inlineCode: {
-              background: 'var(--bolt-elements-artifacts-inlineCode-background)',
-              text: 'var(--bolt-elements-artifacts-inlineCode-text)',
+              background: 'var(--codeia-elements-artifacts-inlineCode-background)',
+              text: 'var(--codeia-elements-artifacts-inlineCode-text)',
             },
           },
           messages: {
-            background: 'var(--bolt-elements-messages-background)',
-            linkColor: 'var(--bolt-elements-messages-linkColor)',
+            background: 'var(--codeia-elements-messages-background)',
+            linkColor: 'var(--codeia-elements-messages-linkColor)',
             code: {
-              background: 'var(--bolt-elements-messages-code-background)',
+              background: 'var(--codeia-elements-messages-code-background)',
             },
             inlineCode: {
-              background: 'var(--bolt-elements-messages-inlineCode-background)',
-              text: 'var(--bolt-elements-messages-inlineCode-text)',
+              background: 'var(--codeia-elements-messages-inlineCode-background)',
+              text: 'var(--codeia-elements-messages-inlineCode-text)',
             },
           },
           icon: {
-            success: 'var(--bolt-elements-icon-success)',
-            error: 'var(--bolt-elements-icon-error)',
-            primary: 'var(--bolt-elements-icon-primary)',
-            secondary: 'var(--bolt-elements-icon-secondary)',
-            tertiary: 'var(--bolt-elements-icon-tertiary)',
+            success: 'var(--codeia-elements-icon-success)',
+            error: 'var(--codeia-elements-icon-error)',
+            primary: 'var(--codeia-elements-icon-primary)',
+            secondary: 'var(--codeia-elements-icon-secondary)',
+            tertiary: 'var(--codeia-elements-icon-tertiary)',
           },
           preview: {
             addressBar: {
-              background: 'var(--bolt-elements-preview-addressBar-background)',
-              backgroundHover: 'var(--bolt-elements-preview-addressBar-backgroundHover)',
-              backgroundActive: 'var(--bolt-elements-preview-addressBar-backgroundActive)',
-              text: 'var(--bolt-elements-preview-addressBar-text)',
-              textActive: 'var(--bolt-elements-preview-addressBar-textActive)',
+              background: 'var(--codeia-elements-preview-addressBar-background)',
+              backgroundHover: 'var(--codeia-elements-preview-addressBar-backgroundHover)',
+              backgroundActive: 'var(--codeia-elements-preview-addressBar-backgroundActive)',
+              text: 'var(--codeia-elements-preview-addressBar-text)',
+              textActive: 'var(--codeia-elements-preview-addressBar-textActive)',
             },
           },
           terminals: {
-            background: 'var(--bolt-elements-terminals-background)',
-            buttonBackground: 'var(--bolt-elements-terminals-buttonBackground)',
+            background: 'var(--codeia-elements-terminals-background)',
+            buttonBackground: 'var(--codeia-elements-terminals-buttonBackground)',
           },
-          dividerColor: 'var(--bolt-elements-dividerColor)',
+          dividerColor: 'var(--codeia-elements-dividerColor)',
           loader: {
-            background: 'var(--bolt-elements-loader-background)',
-            progress: 'var(--bolt-elements-loader-progress)',
+            background: 'var(--codeia-elements-loader-background)',
+            progress: 'var(--codeia-elements-loader-progress)',
           },
           prompt: {
-            background: 'var(--bolt-elements-prompt-background)',
+            background: 'var(--codeia-elements-prompt-background)',
           },
           sidebar: {
-            dropdownShadow: 'var(--bolt-elements-sidebar-dropdownShadow)',
-            buttonBackgroundDefault: 'var(--bolt-elements-sidebar-buttonBackgroundDefault)',
-            buttonBackgroundHover: 'var(--bolt-elements-sidebar-buttonBackgroundHover)',
-            buttonText: 'var(--bolt-elements-sidebar-buttonText)',
+            dropdownShadow: 'var(--codeia-elements-sidebar-dropdownShadow)',
+            buttonBackgroundDefault: 'var(--codeia-elements-sidebar-buttonBackgroundDefault)',
+            buttonBackgroundHover: 'var(--codeia-elements-sidebar-buttonBackgroundHover)',
+            buttonText: 'var(--codeia-elements-sidebar-buttonText)',
           },
           cta: {
-            background: 'var(--bolt-elements-cta-background)',
-            text: 'var(--bolt-elements-cta-text)',
+            background: 'var(--codeia-elements-cta-background)',
+            text: 'var(--codeia-elements-cta-text)',
           },
         },
       },

@@ -50,8 +50,8 @@ const GitCloneButton = ({ importChat }: GitCloneButtonProps) => {
       </IconButton>
 
       {isOpen && (
-        <div className="absolute bottom-full mb-2 right-0 w-80 bg-bolt-elements-background-depth-2 border border-bolt-elements-borderColor rounded-lg p-4 shadow-lg">
-          <h4 className="text-sm font-medium text-bolt-elements-textPrimary mb-2">
+        <div className="absolute bottom-full mb-2 right-0 w-80 bg-codeia-elements-background-depth-2 border border-codeia-elements-borderColor rounded-lg p-4 shadow-lg">
+          <h4 className="text-sm font-medium text-codeia-elements-textPrimary mb-2">
             Clone Git Repository
           </h4>
           <input
@@ -60,22 +60,22 @@ const GitCloneButton = ({ importChat }: GitCloneButtonProps) => {
             onChange={(e) => setRepoUrl(e.target.value)}
             placeholder="https://github.com/user/repo.git"
             className={classNames(
-              'w-full px-3 py-2 text-sm bg-bolt-elements-background-depth-1',
-              'border border-bolt-elements-borderColor rounded-md mb-3',
-              'text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary',
-              'focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus'
+              'w-full px-3 py-2 text-sm bg-codeia-elements-background-depth-1',
+              'border border-codeia-elements-borderColor rounded-md mb-3',
+              'text-codeia-elements-textPrimary placeholder-codeia-elements-textTertiary',
+              'focus:outline-none focus:ring-2 focus:ring-codeia-elements-focus'
             )}
           />
           <div className="flex gap-2">
             <button
               onClick={handleClone}
-              className="px-3 py-1 text-sm bg-bolt-elements-background-depth-3 text-bolt-elements-textPrimary rounded hover:bg-bolt-elements-background-depth-4"
+              className="px-3 py-1 text-sm bg-codeia-elements-background-depth-3 text-codeia-elements-textPrimary rounded hover:bg-codeia-elements-background-depth-4"
             >
               Clone
             </button>
             <button
               onClick={() => setIsOpen(false)}
-              className="px-3 py-1 text-sm bg-bolt-elements-background-depth-1 text-bolt-elements-textSecondary rounded hover:bg-bolt-elements-background-depth-2"
+              className="px-3 py-1 text-sm bg-codeia-elements-background-depth-1 text-codeia-elements-textSecondary rounded hover:bg-codeia-elements-background-depth-2"
             >
               Cancel
             </button>

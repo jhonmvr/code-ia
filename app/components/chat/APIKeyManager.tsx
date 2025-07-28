@@ -12,15 +12,15 @@ export const APIKeyManager = ({ provider, apiKey, setApiKey }: APIKeyManagerProp
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className="mb-4 p-3 bg-bolt-elements-background-depth-1 rounded-lg border border-bolt-elements-borderColor">
+    <div className="mb-4 p-3 bg-codeia-elements-background-depth-1 rounded-lg border border-codeia-elements-borderColor">
       <div className="flex items-center justify-between mb-2">
-        <label className="text-sm font-medium text-bolt-elements-textPrimary">
+        <label className="text-sm font-medium text-codeia-elements-textPrimary">
           {provider.name} API Key
         </label>
         <button
           type="button"
           onClick={() => setIsVisible(!isVisible)}
-          className="text-xs text-bolt-elements-textSecondary hover:text-bolt-elements-textPrimary"
+          className="text-xs text-codeia-elements-textSecondary hover:text-codeia-elements-textPrimary"
         >
           {isVisible ? 'Hide' : 'Show'}
         </button>
@@ -31,10 +31,10 @@ export const APIKeyManager = ({ provider, apiKey, setApiKey }: APIKeyManagerProp
         onChange={(e) => setApiKey(e.target.value)}
         placeholder={`Enter your ${provider.name} API key`}
         className={classNames(
-          'w-full px-3 py-2 text-sm bg-bolt-elements-background-depth-2',
-          'border border-bolt-elements-borderColor rounded-md',
-          'text-bolt-elements-textPrimary placeholder-bolt-elements-textTertiary',
-          'focus:outline-none focus:ring-2 focus:ring-bolt-elements-focus focus:border-transparent'
+          'w-full px-3 py-2 text-sm bg-codeia-elements-background-depth-2',
+          'border border-codeia-elements-borderColor rounded-md',
+          'text-codeia-elements-textPrimary placeholder-codeia-elements-textTertiary',
+          'focus:outline-none focus:ring-2 focus:ring-codeia-elements-focus focus:border-transparent'
         )}
       />
     </div>
