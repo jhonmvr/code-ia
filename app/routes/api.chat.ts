@@ -37,6 +37,7 @@ function parseCookies(cookieHeader: string): Record<string, string> {
 }
 
 async function chatAction({ context, request }: ActionFunctionArgs) {
+  console.log('Chat request received');
   const { messages, files, promptId, contextOptimization, supabase } = await request.json<{
     messages: Messages;
     files: any;
@@ -253,9 +254,10 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             });
 
             result.mergeIntoDataStream(dataStream);
-
+            console.log('Continuing response stream', result);
             (async () => {
               for await (const part of result.fullStream) {
+                console.log(">>> RESPONSE PART", part);
                 if (part.type === 'error') {
                   const error: any = part.error;
                   logger.error(`${error}`);

@@ -6,6 +6,7 @@ export interface ModelInfo {
   label: string;
   provider: string;
   maxTokenAllowed: number;
+  tokenLimitParam?: 'max_tokens' | 'max_completion_tokens';
 }
 
 export interface ProviderInfo {

@@ -37,7 +37,9 @@ export default class OllamaProvider extends BaseProvider {
     baseUrlKey: 'OLLAMA_API_BASE_URL',
   };
 
-  staticModels: ModelInfo[] = [];
+  staticModels: ModelInfo[] = [
+    { name: 'llama3.1:latest', label: 'Llama 3.1', provider: 'Ollama', maxTokenAllowed: 8000 },
+  ];
 
   private _convertEnvToRecord(env?: Env): Record<string, string> {
     if (!env) {
@@ -106,6 +108,7 @@ export default class OllamaProvider extends BaseProvider {
     apiKeys?: Record<string, string>;
     providerSettings?: Record<string, IProviderSetting>;
   }) => LanguageModelV1 = (options) => {
+    console.log("getModelInstance")
     const { apiKeys, providerSettings, serverEnv, model } = options;
     const envRecord = this._convertEnvToRecord(serverEnv);
 
@@ -118,6 +121,7 @@ export default class OllamaProvider extends BaseProvider {
     });
 
     // Backend: Check if we're running in Docker
+
     if (!baseUrl) {
       throw new Error('No baseUrl found for OLLAMA provider');
     }

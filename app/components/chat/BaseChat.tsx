@@ -382,7 +382,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   )}
                 </div>
                 <ScrollToBottom />
-                {progressAnnotations && <ProgressCompilation data={progressAnnotations} />}
+                {/* {progressAnnotations && <ProgressCompilation data={progressAnnotations} />} */}
                 <div
                   className={classNames(
                     'relative bg-codeia-elements-background-depth-2 p-3 rounded-lg border border-codeia-elements-borderColor relative w-full max-w-chat mx-auto z-prompt',
@@ -436,17 +436,13 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                               apiKeys={apiKeys}
                               modelLoading={isModelLoading}
                             />
-                            {(providerList || []).length > 0 &&
-                              provider &&
-                              (!LOCAL_PROVIDERS.includes(provider.name) || provider.name === 'OpenAILike') && (
-                                <APIKeyManager
-                                  provider={provider}
-                                  apiKey={apiKeys[provider.name] || ''}
-                                  setApiKey={(key) => {
-                                    onApiKeysChange(provider.name, key);
-                                  }}
-                                />
-                              )}
+                            {provider && (<APIKeyManager
+                              provider={provider}
+                              apiKey={apiKeys[provider.name] || ''}
+                              setApiKey={(key) => {
+                                onApiKeysChange(provider.name, key);
+                              }}
+                            />)}
                           </>
                         )}
                       </ClientOnly>

@@ -58,6 +58,7 @@ export class LLMManager {
     }
 
     logger.info('Registering Provider: ', provider.name);
+    //console.log('Registering Provider: ', provider);
     this._providers.set(provider.name, provider);
     this._modelList = [...this._modelList, ...provider.staticModels];
   }
@@ -166,7 +167,8 @@ export class LLMManager {
       return [...cachedModels, ...staticModels];
     }
 
-    logger.info(`Getting dynamic models for ${provider.name}`);
+    logger.error(`Getting dynamic models for ${provider.name}`);
+    
 
     const dynamicModels = await provider
       .getDynamicModels?.(apiKeys, providerSettings?.[provider.name], serverEnv)

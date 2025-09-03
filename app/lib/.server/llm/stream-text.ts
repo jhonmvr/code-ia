@@ -12,6 +12,8 @@ import { createFilesContext, extractPropertiesFromMessage } from './utils';
 export type Messages = Message[];
 
 export interface StreamingOptions extends Omit<Parameters<typeof _streamText>[0], 'model'> {
+  maxTokens?: number;
+  max_completion_tokens?: number; // GTP5
   supabaseConnection?: {
     isConnected: boolean;
     hasSelectedProject: boolean;
@@ -37,6 +39,7 @@ export async function streamText(props: {
   summary?: string;
   messageSliceId?: number;
 }) {
+  
   const {
     messages,
     env: serverEnv,
@@ -126,21 +129,21 @@ export async function streamText(props: {
 
     systemPrompt = `${systemPrompt}
 
-Below is the artifact containing the context loaded into context buffer for you to have knowledge of and might need changes to fullfill current user request.
-CONTEXT BUFFER:
----
-${codeContext}
----
-`;
+      Below is the artifact containing the context loaded into context buffer for you to have knowledge of and might need changes to fullfill current user request.
+      CONTEXT BUFFER:
+      ---
+      ${codeContext}
+      ---
+      `;
 
     if (summary) {
       systemPrompt = `${systemPrompt}
-      below is the chat history till now
-CHAT SUMMARY:
----
-${props.summary}
----
-`;
+            below is the chat history till now
+      CHAT SUMMARY:
+      ---
+      ${props.summary}
+      ---
+      `;
 
       if (props.messageSliceId) {
         processedMessages = processedMessages.slice(props.messageSliceId);
@@ -170,10 +173,10 @@ ${props.summary}
       .join('\n');
     systemPrompt = `${systemPrompt}
 
-IMPORTANT: The following files are locked and MUST NOT be modified in any way. Do not suggest or make any changes to these files. You can proceed with the request but DO NOT make any changes to these files specifically:
-${lockedFilesListString}
----
-`;
+      IMPORTANT: The following files are locked and MUST NOT be modified in any way. Do not suggest or make any changes to these files. You can proceed with the request but DO NOT make any changes to these files specifically:
+      ${lockedFilesListString}
+      ---
+      `;
   } else {
     console.log('No locked files found from any source for prompt.');
   }
@@ -181,8 +184,22 @@ ${lockedFilesListString}
   logger.info(`Sending llm call to ${provider.name} with model ${modelDetails.name}`);
 
   // console.log(systemPrompt, processedMessages);
-
-  return await _streamText({
+  console.log(">>> REQUEST>>>>", {
+    model: modelDetails.name,
+    provider: provider.name,
+    messages: processedMessages,
+    systemPrompt,
+    options,
+  });
+  logger.debug(">>> REQUEST", {
+    model: modelDetails.name,
+    provider: provider.name,
+    messages: processedMessages,
+    systemPrompt,
+    options,
+  });
+  const tokenLimitParam = modelDetails?.tokenLimitParam || "max_tokens";
+  const result = await _streamText({
     model: provider.getModelInstance({
       model: modelDetails.name,
       serverEnv,
@@ -190,8 +207,14 @@ ${lockedFilesListString}
       providerSettings,
     }),
     system: systemPrompt,
-    maxTokens: dynamicMaxTokens,
+    [tokenLimitParam]: dynamicMaxTokens,
     messages: convertToCoreMessages(processedMessages as any),
     ...options,
+    temperature: 1,
   });
+
+  logger.debug("<<< RESPONSE", result);
+
+  console.log("<<< RESPONSE>>>>", result);
+  return result;
 }

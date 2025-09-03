@@ -19,21 +19,7 @@ import GithubProvider from './providers/github';
 
 export {
   AnthropicProvider,
-  CohereProvider,
-  DeepseekProvider,
   GoogleProvider,
-  GroqProvider,
-  HuggingFaceProvider,
-  HyperbolicProvider,
-  MistralProvider,
-  OllamaProvider,
   OpenAIProvider,
-  OpenRouterProvider,
-  OpenAILikeProvider,
-  PerplexityProvider,
-  XAIProvider,
-  TogetherProvider,
-  LMStudioProvider,
-  AmazonBedrockProvider,
-  GithubProvider,
+  DeepseekProvider,
 };

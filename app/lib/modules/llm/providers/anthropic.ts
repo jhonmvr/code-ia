@@ -38,7 +38,7 @@ export default class AnthropicProvider extends BaseProvider {
       maxTokenAllowed: 8000,
     },
     { name: 'claude-3-opus-latest', label: 'Claude 3 Opus', provider: 'Anthropic', maxTokenAllowed: 8000 },
-    { name: 'claude-3-sonnet-20240229', label: 'Claude 3 Sonnet', provider: 'Anthropic', maxTokenAllowed: 8000 },
+    { name: 'claude-sonnet-4-20250514', label: 'Claude 4 Sonnet', provider: 'Anthropic', maxTokenAllowed: 1024 },
     { name: 'claude-3-haiku-20240307', label: 'Claude 3 Haiku', provider: 'Anthropic', maxTokenAllowed: 8000 },
   ];
 
