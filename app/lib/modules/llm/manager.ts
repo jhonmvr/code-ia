@@ -60,7 +60,7 @@ export class LLMManager {
     logger.info('Registering Provider: ', provider.name);
     //console.log('Registering Provider: ', provider);
     this._providers.set(provider.name, provider);
-    this._modelList = [...this._modelList, ...provider.staticModels];
+    this._modelList = [...provider.staticModels];
   }
 
   getProvider(name: string): BaseProvider | undefined {
