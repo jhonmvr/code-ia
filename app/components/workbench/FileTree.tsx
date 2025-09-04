@@ -783,37 +783,6 @@ function buildFileList(
 
   // Primero, procesar todas las carpetas que existen en el FileMap
   for (const [filePath, dirent] of Object.entries(files)) {
-    if (dirent?.type === 'folder') {
-      const segments = filePath.split('/').filter((segment) => segment);
-      const folderName = segments.at(-1);
-
-      if (!folderName || isHiddenFile(filePath, folderName, hiddenFiles)) {
-        continue;
-      }
-
-      if (!filePath.startsWith(rootFolder) || (hideRoot && filePath === rootFolder)) {
-        continue;
-      }
-
-      if (!folderPaths.has(filePath)) {
-        folderPaths.add(filePath);
-        fileList.push({
-          kind: 'folder',
-          id: fileList.length,
-          name: folderName,
-          fullPath: filePath,
-          depth: segments.length - 1 + defaultDepth,
-        });
-      }
-    }
-  }
-
-  // Luego, procesar todos los archivos y crear carpetas padre si no existen
-  for (const [filePath, dirent] of Object.entries(files)) {
-    if (dirent?.type !== 'file') {
-      continue;
-    }
-
     const segments = filePath.split('/').filter((segment) => segment);
     const fileName = segments.at(-1);
 
@@ -835,8 +804,7 @@ function buildFileList(
         continue;
       }
 
-      if (i === segments.length - 1) {
-        // Es un archivo
+      if (i === segments.length - 1 && dirent?.type === 'file') {
         fileList.push({
           kind: 'file',
           id: fileList.length,
@@ -845,8 +813,8 @@ function buildFileList(
           depth: depth + defaultDepth,
         });
       } else if (!folderPaths.has(fullPath)) {
-        // Es una carpeta padre que no existe aún
         folderPaths.add(fullPath);
+
         fileList.push({
           kind: 'folder',
           id: fileList.length,
